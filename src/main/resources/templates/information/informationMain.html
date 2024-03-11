@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/layout}"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+    layout:fragment="content">
+
+<head>
+    <meta charset="UTF-8">
+    <title>INFORMATION</title>
+
+    <style>
+        .table_css{
+            color:white;
+            background-color:skyblue;
+            text-align: center ;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container-fluid row-lg-30">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">INFORMATION</h1>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">기본정보</h6>
+                                    <div sec:authorize="hasRole('ADMIN')">
+                                    <button class="btn btn-info btn-icon-split" id="profileInformationBtn" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-info-circle"></i>
+                                        </span>
+                                        <span class="text">수정하기</span>
+                                    </button>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                    <div class=""></div>
+                                    </div></div>
+                                        <div class="text-center">
+												이름: <p th:text="${users['USE_NM']}"/>
+												<br/>
+												전화번호: <p th:text="${users['USE_TEL']}"/>
+												<br/>
+												이메일: <p th:text="${users['USE_EMAIL']}"/>
+												<br/>
+												자기소개: <p th:text="${users['USE_INTRODUCE']}"/>
+												<br/>
+                                        		
+<!-- 												<p>사용자 이름: <span sec:authentication="principal"></span></p> -->
+<!-- 										        <p>사용자 권한: <span sec:authentication="name"></span></p> -->
+<!-- 										        <p>인증 여부: <span sec:authentication="principal.authorities"></span></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">학력</h6>
+                                    <div sec:authorize="hasRole('ADMIN')">
+	                                     <button id="schoolAddModalBtn" class="btn btn-primary btn-icon-split">
+	                                       <span class="icon text-white-50">
+	                                            <i class="fas fa-flag"></i>
+	                                        </span>
+	                                        <span class="text">추가하기</span>
+	                                    </button>
+	                                     <button id="careerDeleteBtn" class="btn btn-danger btn-icon-split" 
+	                                     						data-bs-toggle="modal" data-bs-target="#profileModal">
+	                                        <span class="icon text-white-50">
+	                                            <i class="fas fa-trash"></i>
+	                                        </span>
+	                                        <span class="text">삭제하기</span>
+	                                    </button>
+                                    </div>
+                                    
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="overflow: auto">
+                                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                    <div class=""></div>
+                                    </div></div>
+                                        
+										<div th:if="${schoolInfoList != null}">
+										    <div th:each="schoolInfo : ${schoolInfoList}" class="card mb-4 py-3 border-bottom-primary">
+										        <div class="card-body">
+										        	<input class="form-check-input" type="checkbox" id="schoolInfoSchNo" name="selectedSchool" value="schoolInfoSchNo">
+										        	<table>
+										        		<colgroup>
+										        			<col width="10%">
+										        			<col width="10%">
+										        			<col width="15%">
+										        			<col width="15%">
+										        			<col width="10%">
+										        			<col width="10%">
+										        		</colgroup>
+										        		<tr>
+										        			<th>학교구분</th>
+										        			<th>학교명</th>
+										        			<th>입학일</th>
+										        			<th>졸업일</th>
+										        			<th>졸업여부</th>
+										        			<th>학점/성적</th>
+										        		</tr>
+										        		<tr data-sch-no="${schoolInfo.schNo}">
+										        			<td th:text="${schoolInfo.schSe}">
+										        			<td th:text="${schoolInfo.schNm}"/>
+										        			<td th:text="${schoolInfo.schBeginDate}"/>
+										        			<td th:text="${schoolInfo.schEndDate}"/>
+										        			<td th:text="${schoolInfo.schGraduate}"/>
+										        			<td th:text="${schoolInfo.schScore}">
+										        		</tr>
+										        	</table>
+										        
+										        </div>
+										    </div>
+										</div>
+                                        <div th:unless="${schoolInfoList != null}" class="card mb-4 py-3 border-bottom-primary">
+										    <p>조회하신 학력 데이터가 없습니다.</p>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">경력</h6>
+                                    <div sec:authorize="hasRole('ADMIN')">
+	                                     <button id="careerAddModalBtn" class="btn btn-primary btn-icon-split" 
+	                                     						 data-bs-toggle="modal" data-bs-target="#careerModal">
+	                                       <span class="icon text-white-50">
+	                                            <i class="fas fa-flag"></i>
+	                                        </span>
+	                                        <span class="text">추가하기</span>
+	                                    </button>
+	                                     <button id="careerRemoveBtn" class="btn btn-danger btn-icon-split">
+	                                        <span class="icon text-white-50">
+	                                            <i class="fas fa-trash"></i>
+	                                        </span>
+	                                        <span class="text">삭제하기</span>
+	                                    </button>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="overflow: auto">
+                                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                    <div class=""></div>
+                                    </div></div>
+                                        
+                                       	<div id="careerDiv" th:if="${careerList != null}">
+										    <div th:each="careerList : ${careerList}" class="card mb-4 py-3 border-bottom-primary">
+										        <div class="card-body">
+										        	<input class="form-check-input" type="checkbox" id="selectedCareer" name="selectedCareer" th:value="${careerList.carNo}">
+										        	<table>
+										        		<colgroup>
+										        			<col width="20%">
+										        			<col width="20%">
+										        			<col width="20%">
+										        			<col width="20%">
+										        		</colgroup>
+										        		<tr>
+										        			<th>회사명</th>
+										        			<th>직급</th>
+										        			<th>입사일</th>
+										        			<th>퇴사일</th>
+										        		</tr>
+										        		<tr th:data-car-no="${careerList.carNo}">
+										        			<td th:text="${careerList.carNm}"/>
+										        			<td th:text="${careerList.carSpot}"/>
+										        			<td th:text="${careerList.carBeginDate}"/>
+										        			<td th:text="${careerList.carEndDate}"/>
+										        		</tr>
+										        	</table>
+										        
+										        </div>
+										    </div>
+										</div>
+                                        <div th:unless="${careerList != null}" class="card mb-4 py-3 border-bottom-primary">
+										    <p>조회하신 경력 데이터가 없습니다.</p>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">자격증</h6>
+                                    <div sec:authorize="hasRole('ADMIN')">
+	                                     <a href="#" class="btn btn-primary btn-icon-split">
+	                                       <span class="icon text-white-50">
+	                                            <i class="fas fa-flag"></i>
+	                                        </span>
+	                                        <span class="text">추가하기</span>
+	                                    </a>
+	                                     <a href="#" class="btn btn-danger btn-icon-split">
+	                                        <span class="icon text-white-50">
+	                                            <i class="fas fa-trash"></i>
+	                                        </span>
+	                                        <span class="text">삭제하기</span>
+	                                    </a>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="overflow: auto">
+                                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                    <div class=""></div>
+                                    </div></div>
+                                        
+                                       	<div th:if="${certificateList != null}">
+										    <div th:each="certificateList : ${certificateList}" class="card mb-4 py-3 border-bottom-primary">
+										        <div class="card-body">
+										        	<input class="form-check-input" type="checkbox" id="schoolInfoSchNo" name="selectedSchool" value="schoolInfoSchNo">
+										        	<table>
+										        		<colgroup>
+										        			<col width="12%">
+										        			<col width="12%">
+										        			<col width="12%">
+										        			<col width="12%">
+										        		</colgroup>
+										        		<tr>
+										        			<th>자격증명</th>
+										        			<th>자격증번호</th>
+										        			<th>발급기관</th>
+										        			<th>취득일</th>
+										        		</tr>
+										        		<tr data-sch-no="${certificateList.cerNo}">
+										        			<td th:text="${certificateList.cerNm}">
+										        			<td th:text="${certificateList.cerCode}"/>
+										        			<td th:text="${certificateList.cerAgency}"/>
+										        			<td th:text="${certificateList.cerDate}"/>
+										        		</tr>
+										        	</table>
+										        
+										        </div>
+										    </div>
+										</div>
+                                        <div th:unless="${certificateList != null}" class="card mb-4 py-3 border-bottom-primary">
+										    <p>조회하신 자격증 데이터가 없습니다.</p>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">스킬</h6>
+                                    <div sec:authorize="hasRole('ADMIN')">
+	                                     <a href="#" class="btn btn-primary btn-icon-split">
+	                                       <span class="icon text-white-50">
+	                                            <i class="fas fa-flag"></i>
+	                                        </span>
+	                                        <span class="text">추가하기</span>
+	                                    </a>
+	                                     <a href="#" class="btn btn-danger btn-icon-split">
+	                                        <span class="icon text-white-50">
+	                                            <i class="fas fa-trash"></i>
+	                                        </span>
+	                                        <span class="text">삭제하기</span>
+	                                    </a>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="overflow: auto">
+                                	<div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                    <div class=""></div>
+                                    </div></div>
+                                        
+                                       <div th:if="${skilList != null}">
+										    <div th:each="skilList : ${skilList}" class="card mb-4 py-3 border-bottom-primary">
+										        <div class="card-body">
+										        	<input class="form-check-input" type="checkbox" id="schoolInfoSchNo" name="selectedSchool" value="schoolInfoSchNo">
+										        	<table>
+										        		<colgroup>
+										        			<col width="12%">
+										        			<col width="12%">
+										        			<col width="12%">
+										        		</colgroup>
+										        		<tr>
+										        			<th>기술명</th>
+										        			<th>기술설명</th>
+										        			<th>기술난이도</th>
+										        		</tr>
+										        		<tr data-sch-no="${skilList.skilNo}">
+										        			<td th:text="${skilList.skilNm}">
+										        			<td th:text="${skilList.skilContent}"/>
+										        			<td th:text="${skilList.skilNice}"/>
+										        		</tr>
+										        	</table>
+										        
+										        </div>
+										    </div>
+										</div>
+                                        <div th:unless="${skilList != null}" class="card mb-4 py-3 border-bottom-primary">
+										    <p>조회하신 학력 데이터가 없습니다.</p>
+										</div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+
+<!-- 기본정보 수정 모달   -->
+<div class="modal" id="profileModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">기본정보 수정</h5>
+<!--         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button> -->
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form id="profileModifyForm" action="/information/modify" method="post">
+          <div class="mb-3">
+            <label for="useNm" class="form-label">이름:</label>
+            <input type="text" class="form-control" id="useNm" name="useNm" required>
+          </div>
+          <div class="mb-3">
+            <label for="useTel" class="form-label">전화번호:</label>
+            <input type="tel" class="form-control" id="useTel" name="useTel" required>
+          </div>
+          <div class="mb-3">
+            <label for="useEmail" class="form-label">이메일:</label>
+            <input type="email" class="form-control" id="useEmail" name="useEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="useIntroduce" class="form-label">자기소개:</label>
+            <textarea class="form-control" id="useIntroduce" name="useIntroduce" rows="3"></textarea>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="button" id=profileInformationModalClose class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- 경력 추가 모달 -->
+<div class="modal" id="careerModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">경력 추가</h5>
+      </div>
+
+      <!-- Modal body -->
+      <div id="careerAddModalForm" class="modal-body">
+        <form id="careerAddForm" action="/information/career/add" method="post">
+          <div class="mb-3">
+            <label for="carNm" class="form-label">회사명:</label>
+            <input type="text" class="form-control" id="carNm" name="carNm" required>
+          </div>
+          <div class="mb-3">
+            <label for="carSpot" class="form-label">직급:</label>
+            <input type="tel" class="form-control" id="carSpot" name="carSpot" required>
+          </div>
+          <div class="mb-3">
+            <label for="carBeginDate" class="form-label">입사일:</label>
+            <input type="date" class="form-control" id="carBeginDate" name="carBeginDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="carEndDate" class="form-label">퇴사일:</label>
+            <input type="date" class="form-control" id="carEndDate" name="carEndDate" >
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="button" id="careerAddModalClose" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script th:src="@{/js/app/information/information.js}" type="text/javascript"></script>     
+</body>
+
+
+</html>
